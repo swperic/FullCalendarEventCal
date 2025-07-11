@@ -63,8 +63,17 @@ button {
   box-sizing: border-box;
 }
 
+/* Calendar container - fill entire webviewer */
+#calendar {
+  height: 100vh !important;
+  width: 100vw !important;
+  overflow: hidden;
+}
+
+/* Force calendar to use all available space */
 .fc {
-  font-family: 'Arial', sans-serif;
+  height: 100% !important;
+  width: 100% !important;
 }
 
 .fc-button {
@@ -116,12 +125,24 @@ button {
 }
 
 .fc-background-event-with-tooltip {
-  cursor: help;
+  cursor: pointer;
 }
 
+/* Subtle hover and click states for background events */
+.fc-bg-event {
+  cursor: pointer;
+}
+
+.fc-bg-event:hover,
 .fc-background-event-with-tooltip:hover {
-  opacity: 0.5 !important;
-  transition: opacity 0.2s ease;
+  filter: brightness(1.1) !important;
+  transition: filter 0.2s ease;
+}
+
+.fc-bg-event:active,
+.fc-background-event-with-tooltip:active {
+  filter: brightness(0.9) !important;
+  transition: filter 0.1s ease;
 }
 
 /* Ensure proper layering: regular events on top, background events below */
@@ -246,4 +267,47 @@ button {
 
 .fc .fc-daygrid-day-events {
   pointer-events: auto;
+}
+
+/* Make day cells flexible to fill available space */
+.fc-daygrid-day {
+  min-height: auto !important;
+  height: auto !important;
+}
+
+/* Ensure month view uses all available height */
+.fc-dayGridMonth-view .fc-scrollgrid {
+  height: 100% !important;
+}
+
+.fc-dayGridMonth-view .fc-daygrid-body {
+  height: 100% !important;
+}
+
+/* Make table cells flexible */
+.fc-daygrid-day-frame {
+  min-height: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Responsive day cell sizing */
+.fc-col-header-cell {
+  padding: 8px 4px !important;
+}
+
+.fc-daygrid-day-number {
+  padding: 4px !important;
+  font-size: clamp(12px, 2vw, 16px) !important;
+}
+
+/* Ensure proper table layout for responsive sizing */
+.fc-scrollgrid-sync-table {
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+
+.fc-scrollgrid-sync-table td {
+  width: 14.285714% !important; /* 100% / 7 days */
 }

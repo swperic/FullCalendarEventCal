@@ -57,7 +57,7 @@ function processBackgroundEvents(backgroundEventsArray) {
     console.log(`Background event ${bgEvent.name}: date=${bgEvent.date}, start=${startDate}, end=${endDate}`);
     
     return {
-      id: `bg-${bgEvent.uuid || bgEvent.id || Math.random()}`,
+      id: `bg-${bgEvent.entityId || bgEvent.id || Math.random()}`,
       title: bgEvent.name || bgEvent.title || '',
       start: startDate,
       end: endDate,
@@ -99,7 +99,7 @@ window.loadWidget = function (data) {
         if (parsedData.data && parsedData.data.events) {
           // Format: {"data": {"events": [...], "backgroundEvents": [...]}}
           events = parsedData.data.events.map(event => ({
-            id: event.uuid,
+            id: event.entityId,
             title: event.name,
             start: parseFileMakerDate(event.start),
             end: parseFileMakerDate(event.end),
@@ -132,7 +132,7 @@ window.loadWidget = function (data) {
               }
               
               return {
-                id: `bg-${bgEvent.uuid || bgEvent.id || Math.random()}`,
+                id: `bg-${bgEvent.entityId || bgEvent.id || Math.random()}`,
                 title: bgEvent.name || bgEvent.title || '',
                 start: startDate,
                 end: endDate,
@@ -155,7 +155,7 @@ window.loadWidget = function (data) {
         } else if (parsedData.events) {
           // Format: {"events": [...], "backgroundEvents": [...]}
           events = parsedData.events.map(event => ({
-            id: event.uuid,
+            id: event.entityId,
             title: event.name,
             start: parseFileMakerDate(event.start),
             end: parseFileMakerDate(event.end),
@@ -185,7 +185,7 @@ window.loadWidget = function (data) {
               }
               
               return {
-                id: `bg-${bgEvent.uuid || bgEvent.id || Math.random()}`,
+                id: `bg-${bgEvent.entityId || bgEvent.id || Math.random()}`,
                 title: bgEvent.name || bgEvent.title || '',
                 start: startDate,
                 end: endDate,
@@ -208,7 +208,7 @@ window.loadWidget = function (data) {
         } else if (Array.isArray(parsedData)) {
           // Format: [...]
           events = parsedData.map(event => ({
-            id: event.uuid,
+            id: event.entityId,
             title: event.name,
             start: parseFileMakerDate(event.start),
             end: parseFileMakerDate(event.end),
@@ -254,12 +254,14 @@ window.loadWidget = function (data) {
       editable: true,
       selectable: false,
       selectMirror: false,
-      dayMaxEvents: true,
+      dayMaxEvents: false, // Don't limit events - let cells expand
       weekends: true,
       eventDisplay: 'block',
-      height: '100%',
-      aspectRatio: null,
-      contentHeight: 'auto',
+      height: '100vh', // Use full viewport height
+      aspectRatio: null, // Disable aspect ratio to fill container
+      sizeToFit: true, // Automatically adjust to fit container
+      fixedWeekCount: false, // Show only the weeks that belong to the month
+      showNonCurrentDates: false, // Hide dates from other months
       displayEventTime: false, // Remove times from event cells in month view
       eventClick: function(info) {
         // Prevent event from bubbling up to dateClick
@@ -282,7 +284,7 @@ window.loadWidget = function (data) {
           
           // Create data object for background event click
           const clickData = {
-            uuid: event.id.replace('bg-', ''), // Remove bg- prefix
+            entityId: event.id.replace('bg-', ''), // Remove bg- prefix
             entityType: props.entityType || 'BackgroundEvent'
           };
           
@@ -299,7 +301,7 @@ window.loadWidget = function (data) {
         
         // Create data object to pass to FileMaker
         const clickData = {
-          uuid: event.id.replace('bg-', ''), // Remove bg- prefix if it's a background event
+          entityId: event.id.replace('bg-', ''), // Remove bg- prefix if it's a background event
           entityType: props.entityType || 'Event'
         };
         
@@ -353,7 +355,7 @@ window.loadWidget = function (data) {
             `📝 Entity: ${props.entityType || 'N/A'}`
           ];
           
-          // Add UUID if available (useful for debugging/reference)
+          // Add Entity ID if available (useful for debugging/reference)
           if (event.id) {
             tooltipLines.push(`🔖 ID: ${event.id}`);
           }
@@ -404,7 +406,7 @@ window.setData = function(data) {
       // Handle regular events
       if (parsedData.data && parsedData.data.events) {
         events = parsedData.data.events.map(event => ({
-          id: event.uuid || event.id,
+          id: event.entityId || event.id,
           title: event.name || event.title,
           start: parseFileMakerDate(event.start),
           end: parseFileMakerDate(event.end),
@@ -434,7 +436,7 @@ window.setData = function(data) {
             }
             
             return {
-              id: `bg-${bgEvent.uuid || bgEvent.id || Math.random()}`,
+              id: `bg-${bgEvent.entityId || bgEvent.id || Math.random()}`,
               title: bgEvent.name || bgEvent.title || '',
               start: startDate,
               end: endDate,
@@ -457,7 +459,7 @@ window.setData = function(data) {
       } else if (parsedData.events || Array.isArray(parsedData)) {
         const eventData = parsedData.events || parsedData;
         events = eventData.map(event => ({
-          id: event.uuid || event.id,
+          id: event.entityId || event.id,
           title: event.name || event.title,
           start: parseFileMakerDate(event.start),
           end: parseFileMakerDate(event.end),
@@ -487,7 +489,7 @@ window.setData = function(data) {
             }
             
             return {
-              id: `bg-${bgEvent.uuid || bgEvent.id || Math.random()}`,
+              id: `bg-${bgEvent.entityId || bgEvent.id || Math.random()}`,
               title: bgEvent.name || bgEvent.title || '',
               start: startDate,
               end: endDate,
@@ -542,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Test function for your actual data
 window.testWithActualData = function() {
-  const testData = {"data":{"backgroundEvents":[{"date":"7/18/2025","entityType":"DateWarning","name":"Busy. Don't book without double checking","uuid":"314669570948071982666987544629946022680828379932291085466"},{"date":"7/17/2025","entityType":"DateWarning","name":"Busy. Don't book without double checking","uuid":"799815592121091030110985870147981645992476460622971007954"},{"date":"7/19/2025","entityType":"DateWarning","name":"Busy. Don't book without double checking","uuid":"4576316715016125794792509174652648271912678109019545596385"}],"events":[{"end":"8/2/2025 11:59 PM","entityType":"EventDay","manager":"Cory Wetzell","name":"Progressive Life Giving Word Anniversary","start":"8/2/2025 12:00 AM","status":"Confirmed","statusNum":2,"type":"Event","uuid":"923366821674710778378996956968353462366054957006914681376"},{"end":"7/9/2025 11:59 PM","entityType":"EventDay","manager":"Daniel Nickleski","name":"LITH Ribfest","start":"7/9/2025 12:00 AM","status":"Confirmed","statusNum":2,"type":"Event","uuid":"4376917958396236557100070809137938731440673609850874311049"},{"end":"8/15/2025 11:59 PM","entityType":"EventDay","manager":"Cory Wetzell","name":"SL100 Joliet","start":"8/15/2025 12:00 AM","status":"Date Hold","statusNum":1,"type":"Event","uuid":"2784554366648614489655582759088223612887734395028907632297"}]}};
+  const testData = {"data":{"backgroundEvents":[{"date":"7/18/2025","entityType":"DateWarning","name":"Busy. Don't book without double checking","entityId":"314669570948071982666987544629946022680828379932291085466"},{"date":"7/17/2025","entityType":"DateWarning","name":"Busy. Don't book without double checking","entityId":"799815592121091030110985870147981645992476460622971007954"},{"date":"7/19/2025","entityType":"DateWarning","name":"Busy. Don't book without double checking","entityId":"4576316715016125794792509174652648271912678109019545596385"}],"events":[{"end":"8/2/2025 11:59 PM","entityType":"EventDay","manager":"Cory Wetzell","name":"Progressive Life Giving Word Anniversary","start":"8/2/2025 12:00 AM","status":"Confirmed","statusNum":2,"type":"Event","entityId":"923366821674710778378996956968353462366054957006914681376"},{"end":"7/9/2025 11:59 PM","entityType":"EventDay","manager":"Daniel Nickleski","name":"LITH Ribfest","start":"7/9/2025 12:00 AM","status":"Confirmed","statusNum":2,"type":"Event","entityId":"4376917958396236557100070809137938731440673609850874311049"},{"end":"8/15/2025 11:59 PM","entityType":"EventDay","manager":"Cory Wetzell","name":"SL100 Joliet","start":"8/15/2025 12:00 AM","status":"Date Hold","statusNum":1,"type":"Event","entityId":"2784554366648614489655582759088223612887734395028907632297"}]}};
   
   window.loadWidget(testData);
 };
