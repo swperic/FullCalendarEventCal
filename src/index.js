@@ -251,7 +251,7 @@ window.loadWidget = function (data) {
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
       events: allEvents,
-      editable: true,
+      editable: false, // Disable drag and drop of events
       selectable: false,
       selectMirror: false,
       dayMaxEvents: false, // Don't limit events - let cells expand
@@ -260,8 +260,8 @@ window.loadWidget = function (data) {
       height: '100vh', // Use full viewport height
       aspectRatio: null, // Disable aspect ratio to fill container
       sizeToFit: true, // Automatically adjust to fit container
-      fixedWeekCount: false, // Show only the weeks that belong to the month
-      showNonCurrentDates: false, // Hide dates from other months
+      fixedWeekCount: false, // Flexible week count (4-6 weeks depending on month)
+      showNonCurrentDates: true, // Show dates from other months
       displayEventTime: false, // Remove times from event cells in month view
       eventClick: function(info) {
         // Prevent event from bubbling up to dateClick
