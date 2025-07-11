@@ -1,0 +1,249 @@
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
+  line-height: 1;
+  color: #000;
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+p{
+  color:#282828;
+  font-size: 16px;
+}
+
+
+h1 {
+  background-color:#006690;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0 0 10px;
+}
+
+.tintedBlackLeft {
+  background-color:#00000033;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  padding:11px 11px 11px 0px;
+}
+
+button {
+  padding: 5px 9px 5px 9px;
+  border-radius: 3px;
+  font-size: 18px;
+  border: 1px solid #0091CE;
+  background-color: #0091CE;
+  color: #fff;
+}
+
+/* FullCalendar Basic Styling */
+#calendar {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.fc {
+  font-family: 'Arial', sans-serif;
+}
+
+.fc-button {
+  background-color: #0091CE !important;
+  border-color: #0091CE !important;
+  color: white !important;
+}
+
+.fc-button:hover {
+  background-color: #006690 !important;
+  border-color: #006690 !important;
+}
+
+.fc-button:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 145, 206, 0.25) !important;
+}
+
+.fc-today-button:disabled {
+  background-color: #6c757d !important;
+  border-color: #6c757d !important;
+}
+
+.fc-daygrid-event {
+  border: none;
+  background-color: #0091CE;
+  color: white;
+}
+
+.fc-event:hover {
+  background-color: #006690 !important;
+}
+
+/* Enhanced tooltip styling */
+.fc-event-with-tooltip {
+  cursor: help;
+}
+
+.fc-event-with-tooltip:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+  transition: all 0.2s ease;
+}
+
+/* Background event styling */
+.fc-bg-event {
+  opacity: 0.5;
+  border: none !important;
+  padding: 2px 4px;
+}
+
+.fc-background-event-with-tooltip {
+  cursor: help;
+}
+
+.fc-background-event-with-tooltip:hover {
+  opacity: 0.5 !important;
+  transition: opacity 0.2s ease;
+}
+
+/* Ensure proper layering: regular events on top, background events below */
+.fc .fc-bg-event {
+  z-index: 1;
+  pointer-events: auto !important;
+}
+
+.fc .fc-event:not(.fc-bg-event) {
+  z-index: 10;
+  pointer-events: auto !important;
+  position: relative;
+}
+
+/* Background events should allow clicks */
+.fc-daygrid-event[style*="display: none"],
+.fc-event[data-background="true"],
+.fc .fc-event.fc-bg-event {
+  z-index: 1;
+  pointer-events: auto !important;
+}
+
+/* Background event text styling */
+.fc-bg-event .fc-event-title {
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  max-height: 1.2em;
+}
+
+/* Make background events more subtle in different views */
+/* Background event styling - enhanced visibility */
+.fc-bg-event {
+  opacity: 0.5 !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  border-radius: 3px !important;
+}
+
+.fc-timeGridWeek-view .fc-bg-event,
+.fc-timeGridDay-view .fc-bg-event {
+  opacity: 0.5 !important;
+}
+
+.fc-dayGridMonth-view .fc-bg-event {
+  opacity: 0.5 !important;
+  height: 100% !important;
+}
+
+/* Webviewer optimizations */
+.fc .fc-view-harness {
+  height: 100% !important;
+}
+
+.fc .fc-daygrid-body {
+  height: 100% !important;
+}
+
+.fc .fc-scrollgrid {
+  height: 100% !important;
+}
+
+/* Ensure responsive behavior in webviewer */
+@media (max-width: 768px) {
+  .fc-toolbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .fc-button-group {
+    flex-wrap: wrap;
+  }
+}
+
+/* Remove any default margins/padding that might interfere */
+* {
+  box-sizing: border-box;
+}
+
+/* Event styling for light grey background events */
+.fc-event[style*="background-color: rgb(233, 236, 239)"] {
+  color: #000 !important;
+}
+
+.fc-event[style*="background-color:#e9ecef"] {
+  color: #000 !important;
+}
+
+/* Ensure event text is readable on light backgrounds */
+.fc-event-title {
+  color: inherit;
+}
+
+/* Comprehensive background event click prevention */
+.fc .fc-daygrid-bg-harness,
+.fc .fc-timegrid-bg-harness,
+.fc .fc-event[style*="display: background"],
+.fc .fc-event.fc-event-bg,
+.fc .fc-event[data-display="background"] {
+  pointer-events: none !important;
+}
+
+/* Ensure regular events are always clickable */
+.fc .fc-event:not(.fc-bg-event):not([data-display="background"]) {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Date cells should not be clickable but events should be */
+.fc .fc-daygrid-day-frame {
+  pointer-events: none;
+}
+
+.fc .fc-daygrid-day-events {
+  pointer-events: auto;
+}
